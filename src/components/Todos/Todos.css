@@ -1,0 +1,43 @@
+.routes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 5px;
+  box-sizing: border-box;
+  z-index: 3;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6,
+    0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6,
+    0 17px 2px -6px rgb(0 0 0 / 20%);
+}
+.button {
+  height: 30px;
+  border: none;
+  border-radius: 5px;
+  background-color: unset;
+  color: rgb(156, 143, 143);
+  font-size: 13px;
+  cursor: pointer;
+  margin: 5px;
+}
+.button:hover {
+  border: 1px solid rgb(156, 143, 143);
+  border-radius: 5px;
+}
+.active {
+  border: 1px solid rgb(156, 143, 143);
+  border-radius: 5px;
+}
+/* .routes::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 50px;
+    overflow: hidden;
+} */
+
+.todo-list ul li{
+  list-style: none;
+  border-bottom: 1px solid #ededed;
+}

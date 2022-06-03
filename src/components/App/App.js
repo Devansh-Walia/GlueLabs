@@ -19,8 +19,22 @@ class App extends Component {
       newTodo: "",
     };
   }
+  // check the localstorage and if there is any todo init the state to be the same
+  // else init the state to be empty
+  // runs once
+  componentDidMount() {
+    var localData = localStorage.getItem("todos");
+    this.setState({all: JSON.parse(localData)});
+  }
+  //after some change has been made, we update the localstorage as a cleanup and to save the data
+  componentDidUpdate() {
+    this.todoListHandler.save();
+  }
   // object to hold the function related to the edit of the todo list items
   todoListHandler = {
+    save: () => {
+      localStorage.setItem("todos", JSON.stringify(this.state.all));
+    },
     addTodo: (todo) => {
       this.state.all.push({
         key: this.state.all.length + 1,
@@ -31,6 +45,16 @@ class App extends Component {
     removeTodo: (todo) => {
       this.setState({ all: this.state.all.filter((t) => t.key !== todo.key) });
     },
+    updateTodo: (todo) => { 
+      var all = this.state.all;
+      all.forEach((t) => {
+        if (t.key === todo.key) {
+          t.todo = todo.todo;
+          t.completed = todo.completed;
+        }
+      });
+      this.setState({ all });
+    },
     toggleTodo: (todo) => {
       var all = this.state.all;
       // this.setState({ all: all });
@@ -39,6 +63,25 @@ class App extends Component {
           t.completed = !t.completed;
         }
       });
+      this.setState({ all });
+    },
+    clearCompleted: () => { 
+      this.setState({ all: this.state.all.filter((t) => !t.completed) });
+    },
+    ToggleAll: () => {
+      var all = this.state.all;
+      var allTrue = true;
+      all.forEach((t) => {
+        if (t.completed === false) {
+          allTrue = false;
+          t.completed = true;
+        }
+      });
+      if (allTrue) {
+        all.forEach((t) => {
+          t.completed = false;
+        });
+      }
       this.setState({ all });
     }
   };

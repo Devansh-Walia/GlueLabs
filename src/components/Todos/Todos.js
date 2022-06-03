@@ -9,38 +9,34 @@ export class Todos extends Component {
     };
   }
   render() {
-    var todos = this.props.all;
-    var left = 0;
-      todos.forEach(element => {
-      if(element.completed === false){
-        left++;
+    var todos = this.props.all; // this.props.all is the array of the todo list items
+    var left = 0; // the number of the todo list items that are not completed
+      todos.forEach(element => { // loop through the todo list items
+      if(element.completed === false){ // if the todo list item is not completed
+        left++; // increase the number of the todo list items that are not completed
       }
     });
-    var showing = todos.filter(function (todo) {
-      switch (this.state.active) {
-        case "pending":
-          return !todo.completed;
-        case "completed":
-          return todo.completed;
-        default:
-          return true;
+    var showing = todos.filter(function (todo) { // filter the todo list items
+      switch (this.state.active) { // switch the state of the todo list items
+        case "pending": // if the state is pending
+          return !todo.completed; // return the todo list items that are not completed
+        case "completed": // if the state is completed
+          return todo.completed; // return the todo list items that are completed
+        default: // if the state is all
+          return true; // return all the todo list items
       }
-    }, this);
-    this.clickHandler = (name) => {
-      if (name === "all") {
-        showing = this.props.all;
-        this.setState({ active: "all" });
-      } else if (name === "pending") {
-        showing = this.props.pending;
-        this.setState({ active: "pending" });
-      } else if (name === "completed") {
-        showing = this.props.completed;
-        this.setState({ active: "completed" });
-      } else {
-        showing = this.props.all;
-        this.setState({ active: "all" });
+    }, this); // this is the context of the filter function
+    this.clickHandler = (name) => { // function to handle the click of the buttons
+      if (name === "all") { // if the button is all
+        this.setState({ active: "all" }); // set the state of the todo list items to all
+      } else if (name === "pending") { // if the button is pending
+        this.setState({ active: "pending" }); // set the state of the todo list items to pending
+      } else if (name === "completed") { // if the button is completed
+        this.setState({ active: "completed" }); // set the state of the todo list items to completed
+      } else { // if the button is clear completed
+        this.setState({ active: "all" }); // set the state of the todo list items to all
       }
-      this.forceUpdate();
+      this.forceUpdate(); // force the update of the todo list items
     };
     var main = (
       <div className="routes">

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./input.css";
 export class Input extends Component {
-'use strict'; 
 
   render() {
     return (

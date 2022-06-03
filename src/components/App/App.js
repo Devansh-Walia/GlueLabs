@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import "./App.css";
+//customs
 import Input from "../input/Input";
 import Todos from "../Todos/Todos";
 import Footer from "../Footer/Footer";
+
 // costatnts
 var ENTER_KEY = 13;
 class App extends Component {
-  "use strict";
   constructor(props) {
     super(props);
 
@@ -41,6 +42,7 @@ class App extends Component {
       this.setState({ all });
     }
   };
+  // object to hold the function related to the input of the todo list items
   inputHandler = {
     handleChange: (e) => {
       this.setState({ newTodo: e.target.value });

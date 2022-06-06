@@ -6,7 +6,7 @@ import Todos from "../Todos/Todos";
 import Footer from "../Footer/Footer";
 
 // costatnts
-var ENTER_KEY = 13;
+const ENTER_KEY = 13;
 class App extends Component {
   constructor(props) {
     super(props);
@@ -45,12 +45,12 @@ class App extends Component {
     removeTodo: (todo) => {
       this.setState({ all: this.state.all.filter((t) => t.key !== todo.key) });
     },
-    updateTodo: (todo) => { 
+    updateTodo: (todo, value) => { 
       var all = this.state.all;
       all.forEach((t) => {
         if (t.key === todo.key) {
-          t.todo = todo.todo;
-          t.completed = todo.completed;
+          t.todo = value;
+          t.completed = false;
         }
       });
       this.setState({ all });

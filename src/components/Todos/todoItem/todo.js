@@ -21,12 +21,20 @@ export class TodoItem extends Component {
   };
 
   //2nd input to handle the change of the todo list items
-  handleSubmit = () => {
-    console.log("submit");
+  handleSubmit = (event) => {
+    this.props.todoListHandler["updateTodo"](this.props.todo, event.target.value);
     this.setState({ editing: false });
   }
   handleChange2 = (event) => {
     this.setState({ editText: event.target.value });
+  };
+  handleKeyDown = (event) => {
+   if(event.keyCode === 13){
+     this.handleSubmit(event);
+    }
+    if (event.keyCode === 27) {
+        this.setState({editText: this.props.todo.todo, editing:false});
+    }
   };
   render() {
     // console.log();
@@ -61,6 +69,7 @@ export class TodoItem extends Component {
           <input
             className={this.state.editing ? "edit edit-show" : "edit edit-hide"}
             type="text"
+            autoFocus={ true }
             value={this.state.editText}
             onBlur={this.handleSubmit}
             onChange={this.handleChange2}

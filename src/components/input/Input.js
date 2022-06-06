@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./input.css";
 export class Input extends Component {
 
+  //input component for the todo list
   render() {
     return (
       <input

@@ -11,6 +11,7 @@ export class Todos extends Component {
   render() {
     var todos = this.props.all; // this.props.all is the array of the todo list items
     var left = 0; // the number of the todo list items that are not completed
+
     todos.forEach((element) => {
       // loop through the todo list items
       if (element.completed === false) {
@@ -18,8 +19,9 @@ export class Todos extends Component {
         left++; // increase the number of the todo list items that are not completed
       }
     });
+
+    // filter the todo list items
     var showing = todos.filter(function (todo) {
-      // filter the todo list items
       switch (
         this.state.active // switch the state of the todo list items
       ) {
@@ -31,8 +33,9 @@ export class Todos extends Component {
           return true; // return all the todo list items
       }
     }, this); // this is the context of the filter function
+
+    // function to handle the click of the buttons
     this.clickHandler = (name) => {
-      // function to handle the click of the buttons
       if (name === "all") {
         // if the button is all
         this.setState({ active: "all" }); // set the state of the todo list items to all
@@ -48,6 +51,9 @@ export class Todos extends Component {
       }
       this.forceUpdate(); // force the update of the todo list items
     };
+
+    // container for the todo list items button to toggle between all, pending and completed
+    // as well as the clear completed button
     var main = (
       <div className="bottomContainer" >
         <div className="routes">

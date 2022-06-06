@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import './Footer.css'
 export class Footer extends Component {
 
+  //footer component
   render() {
     return (
         <div className='footer'>

@@ -8,21 +8,16 @@ import Footer from "../Footer/footer";
 // costatnts
 const ENTER_KEY = 13;
 const App = () => {
-  const [all, setAll] = useState([]);
+  const [all, setAll] = useState(JSON.parse(localStorage.getItem("todos")) || []);
   const [newTodo, setNewTodo] = useState("");
-  const [fetched, setFetched] = useState(false);
-  const nowShowing = "all";
-  useEffect(() => {
-    setFetched(true);
-    setAll(JSON.parse(localStorage.getItem("todos")) || []);
-  }, []);
-  const todoListHandler = {
+  let todoListHandler = useMemo(() => {}, []);
+  todoListHandler = {
     addTodo: (todo) => {
       // add a new todo to the list
       let All = [
         ...all,
         {
-          key: all.length + 1,
+          key: all.length>0 ?all[all.length-1].key + 1:0,
           todo,
           completed: false,
           date: new Date().toLocaleDateString(),
@@ -36,7 +31,7 @@ const App = () => {
       let All = all.filter((t) => t.key !== todo.key);
       setAll(All);
     },
-    updateTodo: (todo, value) => {
+    updateTodo:  (todo, value) => {
       // update the todo
       let All = all;
       All.forEach((t) => {
@@ -45,9 +40,10 @@ const App = () => {
           t.completed = false; // reset the completed status
         }
       });
-      setAll(All);
+       setAll(All);
+      todoListHandler.save();
     },
-    toggleTodo: (todo) => {
+    toggleTodo:  (todo) => {
       // toggle the completed status of the todo
       let All = all;
       // setState({ all: all });
@@ -56,13 +52,14 @@ const App = () => {
           t.completed = !t.completed;
         }
       });
-      setAll(All);
+       setAll(All);
+      todoListHandler.save();
     },
     clearCompleted: () => {
       // clear the completed todos
       setAll(all.filter((t) => !t.completed));
     },
-    ToggleAll: () => {
+    ToggleAll:  () => {
       // toggle all the todos completed status
       let All = all;
       let allTrue = true;
@@ -72,21 +69,25 @@ const App = () => {
           t.completed = true;
         }
       });
-      console.dir(All);
       if (allTrue) {
         All.forEach((t) => {
           t.completed = false;
         });
       }
-      setAll(All);
+       setAll(All);
+      todoListHandler.save();
     },
     save: () => {
       localStorage.setItem("todos", JSON.stringify(all));
+      console.log("saved");
+      setAll(all);
     },
   };
+  todoListHandler = useMemo(() => todoListHandler, [todoListHandler]);
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(all));
-  }, [all]);
+    todoListHandler.save();
+  }, [all, todoListHandler])
+
   // object to hold the function related to the input of the todo list items
   const inputHandler = {
     handleChange: (e) => {
@@ -119,8 +120,7 @@ const App = () => {
           handleChange={inputHandler.handleChange}
         />
         <Todos
-          all={all}
-          nowShowing={nowShowing}
+          all={()=>all}
           todoListHandler={todoListHandler}
         />
       </div>

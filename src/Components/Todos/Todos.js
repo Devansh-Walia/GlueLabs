@@ -1,18 +1,21 @@
-import React, { useState} from "react";
+import React, { useCallback, useEffect, useMemo, useState} from "react";
 import "./Todos.css";
 import TodoItem from "./todo/todoItem";
 function Todos({ ...props }) {
   // const todos = props.all; // props.all is the array of the todo list items
   const [active, setActive] = useState("all");
-
-  const [left, setLeft] = useState(0);
-  const leftC = props.all.filter((todo) => !todo.completed).length;
-  if (leftC !== left) {
-    setLeft(leftC);
-  }
-
+  const [todos, setTodos] = useState(props.all);
+  const [left, setLeft] = useState(todos.filter((todo) => !todo.completed).length);
+  console.dir(todos);
+  useEffect(() => {
+    if (props.all)
+      setTodos(props.all);
+    if (todos)
+      setLeft(todos.filter((todo) => !todo.completed).length)
+  }, [todos, props.all, left, props]);
+  useMemo(() => { setTodos(props.all); setLeft(todos.filter((todo) => !todo.completed).length)}, [props.all])
   // filter the todo list items
-  let showing = props.all.filter(function (todo) {
+  let showing = todos.filter(function (todo) {
     switch (
       active // switch the state of the todo list items
     ) {
@@ -67,7 +70,7 @@ function Todos({ ...props }) {
           Completed
         </button>
       </div>
-      {left < props.all.length ? (
+      {left < todos.length ? (
         <button
           className="button clear"
           onClick={props.todoListHandler["clearCompleted"]}
@@ -102,7 +105,7 @@ function Todos({ ...props }) {
           ))}
         </ul>
       </div>
-      {props.all.length > 0 ? main : null}
+      {todos.length > 0 ? main : null}
     </>
   );
 }

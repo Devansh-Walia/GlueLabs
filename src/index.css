@@ -12,9 +12,6 @@ body {
 	padding: 20px;
 }
 
-:focus {
-	outline: 0;
-}
 
 .hidden {
 	display: none;

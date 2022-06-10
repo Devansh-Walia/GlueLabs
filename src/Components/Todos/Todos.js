@@ -1,23 +1,16 @@
-import React, { useEffect, useMemo, useState} from "react";
+import React, { useState } from "react";
 import "./Todos.css";
 import TodoItem from "./todo/todoItem";
-function Todos({ ...props }) {
-  // const todos = props.all; // props.all is the array of the todo list items
+function Todos({all, left, clearCompleted, removeTodo, ToggleAll, updateTodo, toggleTodo }) {
+  // const todos = all; // all is the array of the todo list items
   const [active, setActive] = useState("all");
-  const [todos, setTodos] = useState(props.all);
-  const [left, setLeft] = useState(todos.filter((todo) => !todo.completed).length);
-  console.dir(todos);
-  useEffect(() => {
-    if (props.all)
-      setTodos(props.all);
-    if (todos)
-      setLeft(todos.filter((todo) => !todo.completed).length)
-  }, [todos, props.all, left, props]);
-  useMemo(() => { setTodos(props.all); setLeft(todos.filter((todo) => !todo.completed).length)}, [props.all])
+  // console.dir(todos);
+  //! use memo not right 
+  // useMemo(() => { setTodos(all); setLeft(todos.filter((todo) => !todo.completed).length)}, [all])
   // filter the todo list items
-  let showing = todos.filter(function (todo) {
+  let showing = all.filter(function (todo) {
     switch (
-      active // switch the state of the todo list items
+    active // switch the state of the todo list items
     ) {
       case "pending": // if the state is pending
         return !todo.completed; // return the todo list items that are not completed
@@ -70,10 +63,10 @@ function Todos({ ...props }) {
           Completed
         </button>
       </div>
-      {left < todos.length ? (
+      {left < all.length ? (
         <button
           className="button clear"
-          onClick={props.todoListHandler["clearCompleted"]}
+          onClick={clearCompleted}
         >
           Clear completed
         </button>
@@ -87,7 +80,7 @@ function Todos({ ...props }) {
         {showing.length > 0 ? (
           <button
             className="completeAll button"
-            onClick={props.todoListHandler["ToggleAll"]}
+            onClick={ToggleAll}
           >
             <img src="arrowhead-up.png" className="icon" alt="A" />
           </button>
@@ -98,14 +91,16 @@ function Todos({ ...props }) {
               <TodoItem
                 todo={todo}
                 key={todo.key}
-                todoListHandler={props.todoListHandler}
+                removeTodo={removeTodo}
+                updateTodo={updateTodo}
+                toggleTodo={toggleTodo}
                 editing={false}
               />
             </li>
           ))}
         </ul>
       </div>
-      {todos.length > 0 ? main : null}
+      {all.length > 0 ? main : null}
     </>
   );
 }

@@ -1,43 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+
+//customs
 import "./todoItem.css";
-function TodoItem({ todo, removeTodo, toggleTodo, updateTodo }) {
+
+//constatnts 
+const ENTER_KEY = 13;
+const ESCAPE_KEY = 27;
+
+const TodoItem = ({ todo, removeTodo, toggleTodo, updateTodo }) => {
+  //states
   const [checked, setChecked] = useState(todo.completed);
   const [editing, setEditing] = useState(false);
   const [editingText, setEditingText] = useState("");
+  
+  //useEffect to handle toggling of chaeckbox and editing text states
   useEffect(() => {
     setEditingText(todo.todo);
     setChecked(todo.completed);
-  }, [todo.todo, todo.completed, todo]);
+  }, [todo.todo, todo.completed]);
+
+
   // ===== custom methods =====
   // function to handle the change of the checkbox of the todo list items and to update the state of the todo list items
-  const handleChange = (event) => {
-    // handle the change of the checkbox
+  
+  // handle the change of the checkbox
+  const handleChange = useCallback((event) => {
     toggleTodo(todo);
     setChecked(event.target.checked);
-  };
+  }, [todo, toggleTodo]);
 
   //2nd input to handle the change of the todo list items
-  const handleSubmit = (event) => {
-    // handle the submit of the todo list items after edit
+  
+  // handle the submit of the todo list items after edit
+  const handleSubmit = useCallback( (event) => {
     updateTodo(todo, event.target.value);
     setEditing(false);
-  };
+  }, [todo, updateTodo]);
+  
+  // handle the change of the todo list items
   const handleChange2 = (event) => {
-    // handle the change of the todo list items
     setEditingText(event.target.value);
   };
+  
+  // handle the keydown of the todo list items
   const handleKeyDown = (event) => {
-    // handle the keydown of the todo list items
-    if (event.keyCode === 13) {
-      // if enter key is pressed
+    if (event.keyCode === ENTER_KEY) 
       handleSubmit(event);
-    }
-    if (event.keyCode === 27) {
-      // if esc key is pressed
+    
+    if (event.keyCode === ESCAPE_KEY) {
       setEditingText(todo.todo);
       setEditing(false);
     }
   };
+
+
   return (
     <div className="grid-layout">
       <div className="container">
@@ -45,22 +61,15 @@ function TodoItem({ todo, removeTodo, toggleTodo, updateTodo }) {
           className="toggle"
           type="checkbox"
           checked={checked}
-          onChange={handleChange}
-        />
+          onChange={handleChange}/>
         <label
-          onDoubleClick={() => {
-            setEditing(true);
-          }}
-        >
+          onDoubleClick={() => setEditing(true)}>
           {todo.todo}
         </label>
       </div>
       <button
         className="destroy"
-        onClick={() => {
-          removeTodo(todo);
-        }}
-      />
+        onClick={() => removeTodo(todo)}/>
       {editing ? (
         <input
           className={editing ? "edit edit-show" : "edit edit-hide"}

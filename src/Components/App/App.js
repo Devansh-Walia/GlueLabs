@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
-import "./App.css";
+
 //customs
+import "./App.css";
 import InputComponent from "../utils/Input/input";
 import Todos from "../Todos/Todos";
 import Footer from "../Footer/footer";
@@ -8,59 +9,55 @@ import Footer from "../Footer/footer";
 // costatnts
 const ENTER_KEY = 13;
 const App = () => {
+  //states
   const [all, setAll] = useState([]);
   const [left, setLeft] = useState(all.filter((todo) => !todo.completed).length);
   const [newTodo, setNewTodo] = useState("");
+  
+  //save todos to the localstorage + state + update no of items left to be completed
   const save = useCallback(
     (tempState) => {
-      // console.log("in save");
       localStorage.setItem("todos", JSON.stringify(tempState));
       setAll(tempState);
       setLeft(all.filter((t) => !t.completed).length);
     },
     [all],
   );
+
+  // add a new todo to the list
   const addTodo = useCallback(
     (todo) => {
-      // console.log("in add", all);
-      // add a new todo to the list
-      const tempState = [
-        ...all,
-        {
+      const tempState = [...all,{
           key: new Date(),
           todo,
           completed: false,
-        },
-      ];
-      // console.log(tempState);
+        },];
       save(tempState);
     },
     [all, save],
   );
 
+  // remove a todo from the list
   const removeTodo = useCallback((todo) => {
-    // remove a todo from the list
-    // console.log("in remove");
     const tempState = all.filter((t) => t.key !== todo.key);
     save(tempState);
   }, [all, save]);
+
+  // update the todo
   const updateTodo = useCallback((todo, value) => {
-    // console.log("in updateTodo");
-    // update the todo
     const tempState = all;
     tempState.forEach((t) => {
       if (t.key === todo.key) {
-        t.todo = value; // update task
-        t.completed = false; // reset the completed status
+        t.todo = value; 
+        t.completed = false; 
       }
     });
     save(tempState);
   }, [all, save]);
+
+  // toggle the completed status of the todo
   const toggleTodo = useCallback((todo) => {
-    // console.log("in toggleTodo");
-    // toggle the completed status of the todo
     const tempState = all;
-    // setState({ all: all });
     tempState.forEach((t) => {
       if (t.key === todo.key) {
         t.completed = !t.completed;
@@ -68,16 +65,15 @@ const App = () => {
     });
     save(tempState);
   }, [all, save]);
+  
+  // clear the completed todos
   const clearCompleted = useCallback(() => {
-    // console.log("int clwarcompleted");
-    // clear the completed todos
     const tempState = all.filter((t) => !t.completed);
-    // console.dir(tempState, "all");
     save(tempState);
   }, [all, save]);
+
+  // toggle all the todos completed status
   const ToggleAll = useCallback(() => {
-    // console.log("int toggleAll");
-    // toggle all the todos completed status
     const tempState = all;
     let wereAllTodosCompleted = true;
     tempState.forEach((t) => {
@@ -94,27 +90,30 @@ const App = () => {
     save(tempState);
   }, [all, save]);
 
-  // object to hold the function related to the input of the todo list items
 
+  // function related to the input of the todo list items
+  
+  // update the new todo
   const handleChange = (e) => {
-    // update the new todo
     setNewTodo(e.target.value);
   };
+  // add the new todo
   const handleKeyDown = (e) => {
-    // add the new todo
     if (e.keyCode !== ENTER_KEY) {
       return;
     }
     e.preventDefault();
 
     let val = newTodo.trim();
-    // console.log(val);
     if (val) {
       addTodo(val);
       setNewTodo("");
     }
   };
+
+  //use effect to set the all state to things from local storage or default to empty array
   useEffect(() => setAll(JSON.parse(localStorage.getItem("todos")) || []), []);
+  //se effects to handle changes in the todo items and reflect them to no of left items
   useEffect(() => setLeft(all.filter((t) => !t.completed).length), [all]);
 
   return (

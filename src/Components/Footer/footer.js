@@ -1,6 +1,9 @@
 import React from 'react'
+
+//customs
 import './footer.css'
-function Footer() {
+
+const Footer = () => {
     return (
         <div className='footer'>
             <p>Double click to edit the task</p>

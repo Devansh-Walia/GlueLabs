@@ -1,31 +1,34 @@
-const save = (tempState) => {
-    localStorage.setItem("todos", JSON.stringify(tempState));
-}
 
 const initialState = {
-    left: 0,
+    left: JSON.parse(localStorage.getItem("left")) || 0,
     todos: JSON.parse(localStorage.getItem("todos")) || []
 };
 
+const save = (tempState) => {
+    initialState.left = tempState.filter((t)=>!t.completed).length
+    localStorage.setItem("todos", JSON.stringify(tempState));
+    localStorage.setItem("left", initialState.left)
+}
+
 const TodoReducer = (state = initialState, action) => {
     const { payLoad, type } = action;
-    let tempState = state;
+    let tempState = state.todos;
     switch (type) {
         case "SET_TODOS":
             console.log("in set");
             return state;
         case "ADD":
-            tempState = [...state, {
+            tempState = [...state.todos, {
                 key: new Date().getTime(),
                 todo: payLoad.todo,
                 completed: false,
             }];
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         case "DELETE":
             tempState = tempState.filter((t) => t.key !== payLoad.todo.key)
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         case "UPDATE":
             tempState.forEach((t) => {
                 if (t.key === payLoad.todo.key) {
@@ -34,7 +37,7 @@ const TodoReducer = (state = initialState, action) => {
                 }
             })
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         case "TOGGLE":
             tempState.forEach((t) => {
                 if (t.key === payLoad.todo.key) {
@@ -42,7 +45,7 @@ const TodoReducer = (state = initialState, action) => {
                 }
             })
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         case "TOGGLE_ALL":
             let wereAllTodosCompleted = true;
             tempState.forEach((t) => {
@@ -57,11 +60,11 @@ const TodoReducer = (state = initialState, action) => {
                 });
             }
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         case "CLEAR_COMPLETED":
             tempState = tempState.filter((t) => !t.completed);
             save(tempState);
-            return tempState;
+            return {todos:tempState, left :initialState.left};
         default:
             return state;
     }

@@ -13,9 +13,8 @@ import Footer from "../Footer/footer";
 // costatnts
 const ENTER_KEY = 13;
 const App = () => {
-  const todos = useSelector(state => state.todo);
-  const [left,setLeft] = useState(0);
-  setLeft(todos.filter((t) => !t.completed).length);
+  const todos = useSelector(state => state.todo.todos);
+  const left = useSelector(state => state.todo.left);
   const dispatch = useDispatch();
   //states
   const [newTodo, setNewTodo] = useState("");

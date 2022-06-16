@@ -7,6 +7,7 @@ import allReducers from "./reducer";
 const store = createStore(
     allReducers,
 );
+
 const ReduxProvider = ({children}) => {
     return (
         <Provider store = {store}>

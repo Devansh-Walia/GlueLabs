@@ -10,8 +10,10 @@ import { toggleAllRedux, clearCompletedRedux } from "../../Redux/actions/actions
 
 
 const Todos = ({ all, left}) => {
+
   //redux 
   const dispatch = useDispatch();
+  
   //states declaration
   const [active, setActive] = useState("all");
 
@@ -39,6 +41,7 @@ const Todos = ({ all, left}) => {
       setActive("all");
     }
   };
+  
   //lower portion of the screen. one that toggles off when all items's of the todolist are deleted
   let main = (
     <div className="bottomContainer">

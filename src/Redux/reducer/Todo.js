@@ -17,6 +17,7 @@ const TodoReducer = (state = initialState, action) => {
         case "SET_TODOS":
             console.log("in set");
             return state;
+
         case "ADD":
             tempState = [...state.todos, {
                 key: new Date().getTime(),
@@ -24,11 +25,19 @@ const TodoReducer = (state = initialState, action) => {
                 completed: false,
             }];
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+
         case "DELETE":
             tempState = tempState.filter((t) => t.key !== payLoad.todo.key)
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+
         case "UPDATE":
             tempState.forEach((t) => {
                 if (t.key === payLoad.todo.key) {
@@ -37,7 +46,11 @@ const TodoReducer = (state = initialState, action) => {
                 }
             })
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+
         case "TOGGLE":
             tempState.forEach((t) => {
                 if (t.key === payLoad.todo.key) {
@@ -45,7 +58,11 @@ const TodoReducer = (state = initialState, action) => {
                 }
             })
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+
         case "TOGGLE_ALL":
             let wereAllTodosCompleted = true;
             tempState.forEach((t) => {
@@ -60,11 +77,19 @@ const TodoReducer = (state = initialState, action) => {
                 });
             }
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+
         case "CLEAR_COMPLETED":
             tempState = tempState.filter((t) => !t.completed);
             save(tempState);
-            return {todos:tempState, left :initialState.left};
+            return {
+                    todos:tempState,
+                    left:initialState.left
+                };
+                
         default:
             return state;
     }

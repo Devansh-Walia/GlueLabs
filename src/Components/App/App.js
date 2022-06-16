@@ -13,18 +13,20 @@ import Footer from "../Footer/footer";
 // costatnts
 const ENTER_KEY = 13;
 const App = () => {
+  //redux 
   const todos = useSelector(state => state.todo.todos);
   const left = useSelector(state => state.todo.left);
   const dispatch = useDispatch();
+  
   //states
   const [newTodo, setNewTodo] = useState("");
   
   // function related to the input of the todo list items
-  
   // update the new todo
   const handleChange = (e) => {
     setNewTodo(e.target.value);
   };
+  
   // add the new todo
   const handleKeyDown = (e) => {
     if (e.keyCode !== ENTER_KEY) {

@@ -13,8 +13,10 @@ const ENTER_KEY = 13;
 const ESCAPE_KEY = 27;
 
 const TodoItem = ({ todo}) => {
+
   //redux 
   const dispatch = useDispatch();
+  
   //states
   const [checked, setChecked] = useState(todo.completed);
   const [editing, setEditing] = useState(false);

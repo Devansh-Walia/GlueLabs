@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React from "react";
+import { Link,} from "react-router-dom";
 //customs
 import "./Todos.css";
 import TodoItem from "./todo/todoItem";
@@ -8,13 +8,9 @@ import TodoItem from "./todo/todoItem";
 import { useDispatch } from 'react-redux';
 import { toggleAllRedux, clearCompletedRedux } from "../../Redux/actions/actions";
 
-
-const Todos = ({ all, left}) => {
+const Todos = ({ all, left, active }) => {
   //redux 
   const dispatch = useDispatch();
-  //states declaration
-  const [active, setActive] = useState("all");
-
   // filter the todo list items
   let showing = all.filter(function (todo) {
     switch (active) {
@@ -28,34 +24,34 @@ const Todos = ({ all, left}) => {
   }, []);
 
   // function to handle the click of the buttons
-  const clickHandler = (name) => {
-    if (name === "all") {
-      setActive("all");
-    } else if (name === "pending") {
-      setActive("pending");
-    } else if (name === "completed") {
-      setActive("completed");
-    } else {
-      setActive("all");
-    }
-  };
+  // const clickHandler = (name) => {
+  //   if (name === "all") {
+  //     setActive("all");
+  //   } else if (name === "pending") {
+  //     setActive("pending");
+  //   } else if (name === "completed") {
+  //     setActive("completed");
+  //   } else {
+  //     setActive("all");
+  //   }
+  // };
   //lower portion of the screen. one that toggles off when all items's of the todolist are deleted
   let main = (
     <div className="bottomContainer">
       <div className="routes">
         <p className="coutn">{left}item(s) left</p>
-        <button
+        <Link to="/all"
           className={active === "all" ? "button active" : "button"}
-          onClick={() => clickHandler("all")}
-          name="all"> All</button>
-        <button
+          // onClick={() => clickHandler("all")}
+          name="all"> All</Link>
+        <Link to="/pending"
           className={active === "pending" ? "button active" : "button"}
-          onClick={() => clickHandler("pending")}
-          name="pending">Pending</button>
-        <button
+          // onClick={() => clickHandler("pending")}
+          name="pending">Pending</Link>
+        <Link to="/completed"
           className={active === "completed" ? "button active" : "button"}
-          onClick={() => clickHandler("completed")}
-          name="completed">Completed</button>
+          // onClick={() => clickHandler("completed")}
+          name="completed">Completed</Link>
       </div>
       {left < all.length ? (
         <button
@@ -71,7 +67,7 @@ const Todos = ({ all, left}) => {
         {showing.length > 0 ? (
           <button
             className="completeAll button"
-            onClick={()=>dispatch(toggleAllRedux())}
+            onClick={() => dispatch(toggleAllRedux())}
           ><img src="arrowhead-up.png" className="icon" alt="A" />
           </button>
         ) : null}

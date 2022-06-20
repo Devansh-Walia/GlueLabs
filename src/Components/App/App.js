@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes
+} from "react-router-dom";
 // redux
 import { useSelector, useDispatch } from 'react-redux'
 import { addTodoRedux } from "../../Redux/actions/actions";
@@ -18,9 +22,9 @@ const App = () => {
   const dispatch = useDispatch();
   //states
   const [newTodo, setNewTodo] = useState("");
-  
+
   // function related to the input of the todo list items
-  
+
   // update the new todo
   const handleChange = (e) => {
     setNewTodo(e.target.value);
@@ -40,21 +44,26 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div className="todoapp">
-        <h1 className="headding">redux-todo</h1>
-        <InputComponent
-          value={newTodo}
-          onKeyDown={handleKeyDown}
-          handleChange={handleChange}
-        />
-        <Todos
-          all={todos}
-          left={left}
-        />
+    <Router>
+      <div>
+        <div className="todoapp">
+          <h1 className="headding">redux-router</h1>
+          <InputComponent
+            value={newTodo}
+            onKeyDown={handleKeyDown}
+            handleChange={handleChange}
+          />
+          <Routes>
+            <Route path="/all" element={<Todos all={todos} left={left} active={"all"} />}/>
+            <Route path="/completed"  element={ <Todos all={todos} left={left} active={"completed"} /> }/>
+            <Route path="/pending" element={ <Todos all={todos} left={left} active={"pending"} />}   />
+          </Routes>
+
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
+    </Router>
+
   );
 };
 

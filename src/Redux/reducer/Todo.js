@@ -17,7 +17,7 @@ const TodoReducer = (state = initialState, action) => {
         case "SET_TODOS":
             console.log("in set");
             return state;
-        case "ADD":
+        case "ADD_ASYNC":
             tempState = [...state.todos, {
                 key: new Date().getTime(),
                 todo: payLoad.todo,
